@@ -1,5 +1,4 @@
-Django==1.11.5
-git+https://github.com/birkin/bdpy3
+Django==1.11.7
 git+https://github.com/birkin/shellvars-py.git
 PyMySQL==0.7.11
 requests==2.18.4
