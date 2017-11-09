@@ -13,6 +13,8 @@ urlpatterns = [
 
     # url( r'^admin/', admin.site.urls ),  # eg host/project_x/admin/
 
+    url( r'^access_test/$', views.access_test, name='access_test_url' ),
+
     url( r'^info/$', views.info, name='info_url' ),
 
     url( r'^v1/$', views.v1, name='v1_url' ),

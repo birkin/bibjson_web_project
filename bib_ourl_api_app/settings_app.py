@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import os
 
-README_URL = 'https://github.com/birkin/bib_ourl_api_project/blob/master/README.md'
+
+README_URL = os.environ['BIBOURLWEB__README_URL']

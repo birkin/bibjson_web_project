@@ -12,7 +12,6 @@ from django.shortcuts import get_object_or_404, render
 log = logging.getLogger(__name__)
 
 
-
 def info( request ):
     """ Returns simplest response. """
     return HttpResponseRedirect( settings_app.README_URL )
@@ -47,6 +46,6 @@ def v2_bib_request( request ):
 
 def access_test( request ):
     """ Returns simplest response. """
-    log.debug( 'request, ```%s```' % pprint.pformat(request.__dict__) )
     now = datetime.datetime.now()
+    log.debug( 'now-time, ```%s```' % str(now) )
     return HttpResponse( '<p>hi</p> <p>( %s )</p>' % now )
