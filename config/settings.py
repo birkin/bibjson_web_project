@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     # 'django.contrib.sessions',
     'django.contrib.messages',
     # 'django.contrib.staticfiles',
-    'bdpy3_web_app',
+    'bib_ourl_api_app',
 ]
 
 MIDDLEWARE = [
@@ -163,7 +163,7 @@ LOGGING = {
         },
     },
     'loggers': {
-        'bdpy3_web_app': {
+        'bib_ourl_api_app': {
             'handlers': ['logfile', 'console'],
             'level': os.environ.get(u'BIBOURLWEB__LOG_LEVEL'),
             'propagate': True

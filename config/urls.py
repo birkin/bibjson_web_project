@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from bdpy3_web_app import views
+from bib_ourl_api_app import views
 from django.conf.urls import include, url
 from django.contrib import admin
 from django.views.generic import RedirectView

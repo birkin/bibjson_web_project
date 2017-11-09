@@ -2,8 +2,8 @@
 
 import json, logging, pprint
 from django.test import SimpleTestCase    ## TestCase requires db
-from bdpy3_web_app import settings_app
-from bdpy3_web_app.lib.app_helper import LibCaller
+from bib_ourl_api_app import settings_app
+from bib_ourl_api_app.lib.app_helper import LibCaller
 
 
 log = logging.getLogger(__name__)

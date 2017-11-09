@@ -1,10 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import datetime, json, logging, os, pprint
-from bdpy3_web_app import settings_app
-from bdpy3_web_app.lib.app_helper import Validator, LibCaller
-from bdpy3_web_app.lib.lib_caller import V2RequestBibCaller
-from bdpy3_web_app.lib.validator import V2RequestValidator
+from . import settings_app
 from django.conf import settings
 from django.contrib.auth import logout
 from django.core.urlresolvers import reverse
@@ -14,10 +11,6 @@ from django.shortcuts import get_object_or_404, render
 
 log = logging.getLogger(__name__)
 
-caller = LibCaller()
-v1_validator = Validator()
-v2_request_bib_caller = V2RequestBibCaller()
-v2_request_validator = V2RequestValidator()
 
 
 def info( request ):
