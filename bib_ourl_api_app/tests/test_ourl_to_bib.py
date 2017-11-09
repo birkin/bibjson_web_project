@@ -3,7 +3,7 @@
 import json, logging, pprint
 
 from bib_ourl_api_app import settings_app
-from bib_ourl_api_app.lib.openurl import from_openurl
+from bib_ourl_api_app.lib.openurl import from_openurl, to_openurl, OpenURLParser
 from django.test import SimpleTestCase    ## TestCase requires db
 
 
@@ -147,7 +147,8 @@ class OpenUrlToBibTest( SimpleTestCase ):
             >>> bib_dct = from_openurl( unicode_str )
             """
         q = 'sid=FirstSearch:WorldCat&genre=book&title=Zen&date=1978&aulast=Yoshioka&aufirst=T\u014dichi&id=doi:&pid=6104671<fssessid>0</fssessid><edition>1st+ed.</edition>&url_ver=Z39.88-2004&rfr_id=info:sid/firstsearch.oclc.org:WorldCat&rft_val_fmt=info:ofi/fmt:kev:mtx:book&rft.genre=book&req_dat=<sessionid>0</sessionid>&rfe_dat=<accessionnumber>6104671</accessionnumber>&rft_id=info:oclcnum/6104671&rft.aulast=Yoshioka&rft.aufirst=T\u014dichi&rft.btitle=Zen&rft.date=1978&rft.place=Osaka++Japan&rft.pub=Hoikusha&rft.edition=1st+ed.&rft.genre=book'
-        self.assertEqual( unicode, type(q) )
+        # self.assertEqual( unicode, type(q) )
+        self.assertEqual( str, type(q) )
         bib_dct = from_openurl( q )
         bib_json = json.dumps( bib_dct )
         bib2_dct = json.loads( bib_json )
@@ -159,7 +160,7 @@ class OpenUrlToBibTest( SimpleTestCase ):
             Checks that handling will not fail, though it may not return ideal data if the uri was not first converted to an iri. """
         q = 'sid=FirstSearch:WorldCat&genre=book&title=Zen&date=1978&aulast=Yoshioka&aufirst=T\u014dichi&id=doi:&pid=6104671<fssessid>0</fssessid><edition>1st+ed.</edition>&url_ver=Z39.88-2004&rfr_id=info:sid/firstsearch.oclc.org:WorldCat&rft_val_fmt=info:ofi/fmt:kev:mtx:book&rft.genre=book&req_dat=<sessionid>0</sessionid>&rfe_dat=<accessionnumber>6104671</accessionnumber>&rft_id=info:oclcnum/6104671&rft.aulast=Yoshioka&rft.aufirst=T\u014dichi&rft.btitle=Zen&rft.date=1978&rft.place=Osaka++Japan&rft.pub=Hoikusha&rft.edition=1st+ed.&rft.genre=book'
         q8 = q.encode( 'utf-8' )
-        self.assertEqual( byrwa, type(q8) )
+        self.assertEqual( bytes, type(q8) )
         bib_dct = from_openurl( q8)
         bib_json = json.dumps( bib_dct )
         bib2_dct = json.loads( bib_json )
@@ -227,10 +228,10 @@ class OpenUrlToBibTest( SimpleTestCase ):
     def test_author(self):
         q = 'sid=FirstSearch%3AWorldCat&genre=book&isbn=9780393066005&title=The+annotated+Peter+Pan&date=2011&aulast=Barrie&aufirst=J&auinitm=M&id=doi%3A&pid=%3Caccession+number%3E711051770%3C%2Faccession+number%3E%3Cfssessid%3E0%3C%2Ffssessid%3E%3Cedition%3E1st+ed.%2C+Centennial+ed.%3C%2Fedition%3E&url_ver=Z39.88-2004&rfr_id=info%3Asid%2Ffirstsearch.oclc.org%3AWorldCat&rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Abook&req_dat=%3Csessionid%3E0%3C%2Fsessionid%3E&rfe_dat=%3Caccessionnumber%3E711051770%3C%2Faccessionnumber%3E&rft_id=info%3Aoclcnum%2F711051770&rft_id=urn%3AISBN%3A9780393066005&rft.aulast=Barrie&rft.aufirst=J&rft.auinitm=M&rft.btitle=The+annotated+Peter+Pan&rft.date=2011&rft.isbn=9780393066005&rft.place=New+York&rft.pub=W.+W.+Norton+%26+Co.&rft.edition=1st+ed.%2C+Centennial+ed.&rft.genre=book&checksum=af5445c9c9a23c5e4fdbe11393dba00a'
         b = from_openurl(q)
-        self.assertEqual(b['author'][0]['firstname'], 'J' ); self.assertEqual( type(b['author'][0]['firstname']), unicode)
-        self.assertEqual(b['author'][0]['lastname'], 'Barrie' ); self.assertEqual( type(b['author'][0]['lastname']), unicode)
-        self.assertEqual(b['author'][0]['name'], 'Barrie, J' ); self.assertEqual( type(b['author'][0]['name']), unicode)
-        self.assertEqual(b['author'][0]['_minitial'], 'M' ); self.assertEqual( type(b['author'][0]['_minitial']), unicode)
+        self.assertEqual(b['author'][0]['firstname'], 'J' ); self.assertEqual( type(b['author'][0]['firstname']), str)
+        self.assertEqual(b['author'][0]['lastname'], 'Barrie' ); self.assertEqual( type(b['author'][0]['lastname']), str)
+        self.assertEqual(b['author'][0]['name'], 'Barrie, J' ); self.assertEqual( type(b['author'][0]['name']), str)
+        self.assertEqual(b['author'][0]['_minitial'], 'M' ); self.assertEqual( type(b['author'][0]['_minitial']), str)
 
     def test_eissn(self):
         q = 'eissn=15414159&date=2010-01-01&pages=125-141'
