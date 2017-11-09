@@ -252,7 +252,8 @@ class OpenURLParser(object):
                     if auinitm:
                         au['_minitial'] = auinitm
                     #Put the full name (minus middlename) together now if we can.
-                    if not au.has_key('name'):
+                    # if not au.has_key('name'):
+                    if 'name' not in au.keys():
                         #If there isn't a first and last name, just use last.
                         last = au.get('lastname', '')
                         first = au.get('firstname', '')
