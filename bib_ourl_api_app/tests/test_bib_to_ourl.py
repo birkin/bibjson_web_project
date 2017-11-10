@@ -73,7 +73,7 @@
 #     def test_book_chapter(self):
 #         q = 'sid=info:sid/sersol:RefinerQuery&genre=bookitem&isbn=9781402032899&&title=The+roots+of+educational+change&atitle=Finding+Keys+to+School+Change%3A+A+40-Year+Odyssey&volume=&part=&issue=&date=2005&spage=25&epage=57&aulast=Miles&aufirst=Matthew'
 #         b = bib_from_openurl(q)
-#         ourl = to_openurl(b)
+#         ourl = openurl_from_bib(b)
 #         qdict = parse_qs(ourl)
 #         self.assertTrue('bookitem' in qdict.get('rft.genre'))
 
@@ -92,7 +92,7 @@
 #         'rft.atitle': [''],
 #         'rft.genre': ['bookitem']}
 #         b = from_dict(request_dict)
-#         ourl = to_openurl(b)
+#         ourl = openurl_from_bib(b)
 #         parsed_ourl = parse_qs(ourl)
 #         self.assertTrue('bookitem' in parsed_ourl.get('rft.genre'))
 #         self.assertTrue('Coleman, Gabriella' in parsed_ourl.get('rft.au'))
@@ -111,7 +111,7 @@
 #             'rft_val_fmt': ['info:ofi/fmt:kev:mtx:dissertation']
 #         }
 #         b = from_dict(request)
-#         ourl = to_openurl(b)
+#         ourl = openurl_from_bib(b)
 #         parsed_ourl = parse_qs(ourl)
 #         self.assertTrue('dissertation' in parsed_ourl.get('rft.genre'))
 #         self.assertTrue('Rights for the Voiceless' in parsed_ourl.get('rft.title')[0])

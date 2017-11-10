@@ -34,7 +34,7 @@ def bib_from_openurl(query):
     return b.parse()
 
 
-def to_openurl(bib):
+def openurl_from_bib(bib):
     out = BibJSONToOpenURL(bib)
     return out.parse()
 

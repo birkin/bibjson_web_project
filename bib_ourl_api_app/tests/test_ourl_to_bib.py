@@ -3,7 +3,7 @@
 import json, logging, pprint
 
 from bib_ourl_api_app import settings_app
-from bib_ourl_api_app.lib.openurl import bib_from_openurl, to_openurl, OpenURLParser
+from bib_ourl_api_app.lib.openurl import bib_from_openurl, openurl_from_bib, OpenURLParser
 from django.test import SimpleTestCase    ## TestCase requires db
 
 
@@ -62,7 +62,7 @@ class OpenUrlToBibTest( SimpleTestCase ):
         q = 'issn=1175-5652&rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&rfr_id=info%3Asid%2Ffirstsearch.oclc.org%3AMEDLINE&req_dat=<sessionid>0<%2Fsessionid>&pid=<accession+number>678061209<%2Faccession+number><fssessid>0<%2Ffssessid>&rft.date=2010&volume=8&date=2010&rft.volume=8&rfe_dat=<accessionnumber>678061209<%2Faccessionnumber>&url_ver=Z39.88-2004&atitle=The+missing+technology%3A+an+international+comparison+of+human+capital+investment+in+healthcare.&genre=article&epage=71&spage=361&id=doi%3A&rft.spage=361&rft.sici=1175-5652%282010%298%3A6<361%3ATMTAIC>2.0.TX%3B2-O&aulast=Frogner&rft.issue=6&rft.epage=71&rft.jtitle=Applied+health+economics+and+health+policy&rft.aulast=Frogner&title=Applied+health+economics+and+health+policy&rft.aufirst=BK&rft_id=urn%3AISSN%3A1175-5652&sici=1175-5652%282010%298%3A6<361%3ATMTAIC>2.0.TX%3B2-O&sid=FirstSearch%3AMEDLINE&rft.atitle=The+missing+technology%3A+an+international+comparison+of+human+capital+investment+in+healthcare.&issue=6&rft.issn=1175-5652&rft.genre=article&aufirst=BK'
         bib = bib_from_openurl(q)
         #Round trip the query
-        ourl = to_openurl(bib)
+        ourl = openurl_from_bib(bib)
         bib2 = bib_from_openurl(ourl)
         self.assertEqual(bib['type'],
                          bib2['type'])
@@ -78,7 +78,7 @@ class OpenUrlToBibTest( SimpleTestCase ):
         q = 'rft_val_fmt=info:ofi/fmt:kev:mtx:journal&rfr_id=info:sid/pss.sagepub.com&rft.spage=569&rft.issue=4&rft.epage=582&rft.aulast=Nolen-Hoeksema&ctx_tim=2010-11-27T19:38:39.6-08:00&url_ctx_fmt=info:ofi/fmt:kev:mtx:ctx&rft.volume=100&url_ver=Z39.88-2004&rft.stitle=J%20Abnorm%20Psychol&rft.auinit1=S.&rft.atitle=Responses%20to%20depression%20and%20their%20effects%20on%20the%20duration%20of%20depressive%20episodes.&ctx_ver=Z39.88-2004&rft_id=info:pmid/1757671&rft.jtitle=Journal%20of%20abnormal%20psychology&rft.genre=article'
         bib = bib_from_openurl(q)
         #pprint(bib)
-        ourl = to_openurl(bib)
+        ourl = openurl_from_bib(bib)
         bib2 = bib_from_openurl(ourl)
         #pprint(bib2)
         self.assertEqual(bib['journal']['shortcode'],
@@ -109,7 +109,7 @@ class OpenUrlToBibTest( SimpleTestCase ):
         q = u"rft.title=Elective delivery at 34⁰(/)⁷ to 36⁶(/)⁷ weeks' gestation and its impact on neonatal outcomes in women with stable mild gestational hypertension&pmid=20934682&genre=journal"
         #Just round trip to see if we raise encoding errors.
         bib = bib_from_openurl(q)
-        openurl = to_openurl(bib)
+        openurl = openurl_from_bib(bib)
         bib2 = bib_from_openurl(openurl)
 
     def test_ugly_genre(self):
