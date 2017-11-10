@@ -11,6 +11,58 @@ log = logging.getLogger(__name__)
 SimpleTestCase.maxDiff = None
 
 
+class TestClient( SimpleTestCase ):
+    """ Checks client url hit. """
+
+    def setUp(self):
+        self.bibjson = '''{
+      "_rfr": "info:sid/firstsearch.oclc.org:MEDLINE",
+      "author": [
+        {
+          "firstname": "BK",
+          "lastname": "Frogner",
+          "name": "Frogner, BK"
+        }
+      ],
+      "end_page": "71",
+      "identifier": [
+        {
+          "id": "1175-5652",
+          "type": "issn"
+        },
+        {
+          "id": "678061209",
+          "type": "oclc"
+        }
+      ],
+      "issue": "6",
+      "journal": {
+        "name": "Applied health economics and health policy"
+      },
+      "pages": "361 - 71",
+      "place_of_publication": null,
+      "publisher": null,
+      "start_page": "361",
+      "title": "The missing technology: an international comparison of human capital investment in healthcare.",
+      "type": "article",
+      "volume": "8",
+      "year": "2010"
+    }'''
+
+    def test_v1_request_exact__not_found(self):
+        """ Checks '/v1/ request-exact call'.
+            NOTE: this will really attempt a request! """
+        params = { 'bibjson': self.bibjson }
+        response = self.client.get( '/v1/bib_to_ourl/', params )  # project root part of url is assumed
+        self.assertEqual( 200, response.status_code )
+        self.assertEqual( bytes, type(response.content) )
+        dct = json.loads( response.content )
+        log.debug( 'dct, ```%s```' % pprint.pformat(dct) )
+        self.assertEqual(
+            foo, dct
+        )
+
+
 class TestThesisToOpenURL( SimpleTestCase ):
     """
     Testing thesis and dissertations.  Pulled from logs May, 2014.
@@ -67,10 +119,6 @@ ctx_ver=Z39.88-2004&ctx_enc=info:ofi/enc:UTF-8&rfr_id=info:sid/ProQuest+Disserta
 
 
 class TestToOpenURL( SimpleTestCase ):
-
-    def setUp(self):
-        # self.libcaller = LibCaller()
-        pass
 
     def test_book_chapter(self):
         q = 'sid=info:sid/sersol:RefinerQuery&genre=bookitem&isbn=9781402032899&&title=The+roots+of+educational+change&atitle=Finding+Keys+to+School+Change%3A+A+40-Year+Odyssey&volume=&part=&issue=&date=2005&spage=25&epage=57&aulast=Miles&aufirst=Matthew'

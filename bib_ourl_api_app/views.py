@@ -7,7 +7,7 @@ from django.contrib.auth import logout
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
-from bib_ourl_api_app.lib.openurl import bib_from_openurl
+from bib_ourl_api_app.lib.openurl import bib_from_openurl, openurl_from_bib
 
 
 log = logging.getLogger(__name__)
@@ -21,10 +21,9 @@ def ourl_to_bib( request ):
     if not ourl:
         return HttpResponseBadRequest( '400 / Bad Request -- no `ourl` openurl parameter')
     log.debug( 'ourl, ```%s```' % ourl )
-    bib = from_openurl( ourl )
+    bib = bib_from_openurl( ourl )
     log.debug( 'type(bib), `%s`' % type(bib) )
     log.debug( 'bib, ```%s```' % bib )
-    rtrn_dct = bib
     rtrn_dct = {
         'query': {
             'ourl': ourl,
@@ -42,7 +41,18 @@ def ourl_to_bib( request ):
 def bib_to_ourl( request ):
     """ Converts bibjson to openurl. """
     log.debug( '\n\n\nstarting bib_to_ourl()...' )
-    return HttpResponse( 'bib_to_ourl coming' )
+    start = datetime.datetime.now()
+    bibjson = request.GET.get( 'bibjson', None )
+    if not bibjson:
+        return HttpResponseBadRequest( '400 / Bad Request -- no `bibjson` parameter')
+    bib = json.loads( bibjson )
+    ourl = openurl_from_bib(bib)
+    log.debug( 'ourl, ```%s```' % ourl )
+    rtrn_dct = {
+        'ourl': ourl
+    }
+    jsn = json.dumps( rtrn_dct, sort_keys=True, indent=2 )
+    return HttpResponse( jsn, content_type='application/javascript; charset=utf-8' )
 
 
 def access_test( request ):
