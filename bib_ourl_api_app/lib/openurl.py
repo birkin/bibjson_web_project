@@ -39,7 +39,7 @@ def openurl_from_bib(bib):
     return out.parse()
 
 
-def from_dict(request_dict):
+def bib_from_qdict(request_dict):
     """
     Alias/shortcut to handle dictionary inputs.
     Use for this is passing Django request.GET as dict.

@@ -91,7 +91,7 @@
 #         'url_ver': ['Z39.88-2004'],
 #         'rft.atitle': [''],
 #         'rft.genre': ['bookitem']}
-#         b = from_dict(request_dict)
+#         b = bib_from_qdict(request_dict)
 #         ourl = openurl_from_bib(b)
 #         parsed_ourl = parse_qs(ourl)
 #         self.assertTrue('bookitem' in parsed_ourl.get('rft.genre'))
@@ -110,7 +110,7 @@
 #             'rft_id': ['info:doi/'],
 #             'rft_val_fmt': ['info:ofi/fmt:kev:mtx:dissertation']
 #         }
-#         b = from_dict(request)
+#         b = bib_from_qdict(request)
 #         ourl = openurl_from_bib(b)
 #         parsed_ourl = parse_qs(ourl)
 #         self.assertTrue('dissertation' in parsed_ourl.get('rft.genre'))
