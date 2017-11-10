@@ -3,4 +3,4 @@
 import os
 
 
-README_URL = os.environ['BIBOURLWEB__README_URL']
+README_URL = os.environ['BIBOURLAPI__README_URL']

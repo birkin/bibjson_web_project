@@ -19,14 +19,14 @@ import json, logging, os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ['BIBOURLWEB__SECRET_KEY']
+SECRET_KEY = os.environ['BIBOURLAPI__SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = json.loads( os.environ['BIBOURLWEB__DEBUG_JSON'] )  # will be True or False
+DEBUG = json.loads( os.environ['BIBOURLAPI__DEBUG_JSON'] )  # will be True or False
 
-ADMINS = json.loads( os.environ['BIBOURLWEB__ADMINS_JSON'] )
+ADMINS = json.loads( os.environ['BIBOURLAPI__ADMINS_JSON'] )
 
-ALLOWED_HOSTS = json.loads( os.environ['BIBOURLWEB__ALLOWED_HOSTS'] )  # list
+ALLOWED_HOSTS = json.loads( os.environ['BIBOURLAPI__ALLOWED_HOSTS'] )  # list
 
 
 # Application definition
@@ -54,7 +54,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'config.urls'
 
-# template_dirs = json.loads( os.environ['BIBOURLWEB__TEMPLATES_JSON'] )
+# template_dirs = json.loads( os.environ['BIBOURLAPI__TEMPLATES_JSON'] )
 # TEMPLATES = [
 #     {
 #         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'config.passenger_wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
-# DATABASES = json.loads( os.environ['BIBOURLWEB__DATABASES_JSON'] )
+# DATABASES = json.loads( os.environ['BIBOURLAPI__DATABASES_JSON'] )
 
 
 # Password validation
@@ -116,13 +116,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
-# STATIC_URL = os.environ['BIBOURLWEB__STATIC_URL']
-# STATIC_ROOT = os.environ['BIBOURLWEB__STATIC_ROOT']  # needed for collectstatic command
+# STATIC_URL = os.environ['BIBOURLAPI__STATIC_URL']
+# STATIC_ROOT = os.environ['BIBOURLAPI__STATIC_ROOT']  # needed for collectstatic command
 
 
 # Email
-EMAIL_HOST = os.environ['BIBOURLWEB__EMAIL_HOST']
-EMAIL_PORT = int( os.environ['BIBOURLWEB__EMAIL_PORT'] )
+EMAIL_HOST = os.environ['BIBOURLAPI__EMAIL_HOST']
+EMAIL_PORT = int( os.environ['BIBOURLAPI__EMAIL_PORT'] )
 
 
 # sessions
@@ -153,7 +153,7 @@ LOGGING = {
         'logfile': {
             'level':'DEBUG',
             'class':'logging.FileHandler',  # note: configure server to use system's log-rotate to avoid permissions issues
-            'filename': os.environ.get(u'BIBOURLWEB__LOG_PATH'),
+            'filename': os.environ.get(u'BIBOURLAPI__LOG_PATH'),
             'formatter': 'standard',
         },
         'console':{
@@ -165,10 +165,10 @@ LOGGING = {
     'loggers': {
         'bib_ourl_api_app': {
             'handlers': ['logfile', 'console'],
-            'level': os.environ.get(u'BIBOURLWEB__LOG_LEVEL'),
+            'level': os.environ.get(u'BIBOURLAPI__LOG_LEVEL'),
             'propagate': True
         },
     }
 }
 
-CSRF_TRUSTED_ORIGINS = json.loads( os.environ['BIBOURLWEB__CSRF_TRUSTED_ORIGINS_JSON'] )
+CSRF_TRUSTED_ORIGINS = json.loads( os.environ['BIBOURLAPI__CSRF_TRUSTED_ORIGINS_JSON'] )
