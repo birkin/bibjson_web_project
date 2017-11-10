@@ -19,6 +19,69 @@ except ImportError:
 REQUIRED_KEYS = ['title']
 
 
+##################################################
+## shortcut functions
+##################################################
+
+
+def from_openurl(query):
+    """
+    Alias/shortcut to parse the provided query.
+    """
+    log.debug( 'query, ```%s```' % pprint.pformat(query) )
+    b = OpenURLParser(query)
+    log.debug( 'b, ```%s```' % pprint.pformat(b) )
+    return b.parse()
+
+
+def from_dict(request_dict):
+    """
+    Alias/shortcut to handle dictionary inputs.
+    Use for this is passing Django request.GET as dict.
+    """
+    b = OpenURLParser('', query_dict=request_dict)
+    return b.parse()
+
+
+def pull_oclc(odict):
+    """
+    Pull OCLC numbers from incoming FirstSearch/Worldcat urls.
+    """
+    import re
+    oclc_reg = re.compile('\d+')
+    oclc = None
+    if odict.get('rfr_id', ['null'])[0].rfind('firstsearch') > -1:
+        oclc = odict.get('rfe_dat', ['null'])[0]
+        match = oclc_reg.search(oclc)
+        if match:
+            oclc = match.group()
+            return oclc
+    #Try pid
+    spot = odict.get('pid', ['null'])[0]
+    if spot.rfind('accession') > -1:
+        match = oclc_reg.search(spot)
+        if match:
+            oclc = match.group()
+            return oclc
+    #rfe_dat - these are probably OCLC numbers in most cases.
+    dat = odict.get('rfe_dat')
+    if (dat) and ('accessionnumber' in dat[0]):
+        match = oclc_reg.search(dat[0])
+        if match:
+            return match.group()
+    return oclc
+
+
+def to_openurl(bib):
+    out = BibJSONToOpenURL(bib)
+    return out.parse()
+
+
+##################################################
+## main classes
+##################################################
+
+
 class OpenURLParser(object):
 
     def __init__(self, openurl, query_dict=None):
@@ -302,7 +365,6 @@ class OpenURLParser(object):
         if r:
             return r
 
-
     def parse(self):
         """
         Create and return the bibjson.
@@ -358,22 +420,8 @@ class OpenURLParser(object):
 
         return d
 
-def from_openurl(query):
-    """
-    Alias/shortcut to parse the provided query.
-    """
-    log.debug( 'query, ```%s```' % pprint.pformat(query) )
-    b = OpenURLParser(query)
-    log.debug( 'b, ```%s```' % pprint.pformat(b) )
-    return b.parse()
+    ## end class OpenURLParser()
 
-def from_dict(request_dict):
-    """
-    Alias/shortcut to handle dictionary inputs.
-    Use for this is passing Django request.GET as dict.
-    """
-    b = OpenURLParser('', query_dict=request_dict)
-    return b.parse()
 
 class BibJSONToOpenURL(object):
     def __init__(self, bibjson):
@@ -527,36 +575,4 @@ class BibJSONToOpenURL(object):
         log.debug( 'openurl, ```%s```' % openurl )
         return openurl
 
-
-
-def pull_oclc(odict):
-    """
-    Pull OCLC numbers from incoming FirstSearch/Worldcat urls.
-    """
-    import re
-    oclc_reg = re.compile('\d+')
-    oclc = None
-    if odict.get('rfr_id', ['null'])[0].rfind('firstsearch') > -1:
-        oclc = odict.get('rfe_dat', ['null'])[0]
-        match = oclc_reg.search(oclc)
-        if match:
-            oclc = match.group()
-            return oclc
-    #Try pid
-    spot = odict.get('pid', ['null'])[0]
-    if spot.rfind('accession') > -1:
-        match = oclc_reg.search(spot)
-        if match:
-            oclc = match.group()
-            return oclc
-    #rfe_dat - these are probably OCLC numbers in most cases.
-    dat = odict.get('rfe_dat')
-    if (dat) and ('accessionnumber' in dat[0]):
-        match = oclc_reg.search(dat[0])
-        if match:
-            return match.group()
-    return oclc
-
-def to_openurl(bib):
-    out = BibJSONToOpenURL(bib)
-    return out.parse()
+    ## end class BibJSONToOpenURL()
