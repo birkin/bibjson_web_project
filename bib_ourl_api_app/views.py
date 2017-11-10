@@ -7,7 +7,7 @@ from django.contrib.auth import logout
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
-from bib_ourl_api_app.lib.openurl import from_openurl
+from bib_ourl_api_app.lib.openurl import bib_from_openurl
 
 
 log = logging.getLogger(__name__)

@@ -24,7 +24,7 @@ REQUIRED_KEYS = ['title']
 ##################################################
 
 
-def from_openurl(query):
+def bib_from_openurl(query):
     """
     Alias/shortcut to parse the provided query.
     """
@@ -32,6 +32,11 @@ def from_openurl(query):
     b = OpenURLParser(query)
     log.debug( 'b, ```%s```' % pprint.pformat(b) )
     return b.parse()
+
+
+def to_openurl(bib):
+    out = BibJSONToOpenURL(bib)
+    return out.parse()
 
 
 def from_dict(request_dict):
@@ -70,11 +75,6 @@ def pull_oclc(odict):
         if match:
             return match.group()
     return oclc
-
-
-def to_openurl(bib):
-    out = BibJSONToOpenURL(bib)
-    return out.parse()
 
 
 ##################################################
