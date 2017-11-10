@@ -4,7 +4,7 @@ import json, logging, pprint
 
 from bib_ourl_api_app import settings_app
 from bib_ourl_api_app.lib.openurl import bib_from_openurl, openurl_from_bib, OpenURLParser
-from django.test import SimpleTestCase    ## TestCase requires db
+from django.test import SimpleTestCase  ## TestCase requires db
 
 
 log = logging.getLogger(__name__)
