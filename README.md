@@ -25,7 +25,7 @@ This is a lightweight [django](https://www.djangoproject.com) app that provides 
         payload = { 'ourl': raw_openurl }
         r = requests.get('http://127.0.0.1/bib_ourl_api/v1/ourl_to_bib/', params=payload)
 
-        ## note: requests automatically properly encodes the openurl -- this encoding step is required ##
+        ## note: requests automatically properly encodes the openurl -- this encoding step is important ##
 
 - the output, via `print( r.content )`
 
@@ -121,7 +121,7 @@ This is a lightweight [django](https://www.djangoproject.com) app that provides 
 
         r = requests.get('http://127.0.0.1/bib_ourl_api/v1/bib_to_ourl/', params=payload)
 
-        ## note: requests automatically properly encodes the openurl ##
+        ## note: requests automatically properly encodes the bibjson -- this encoding step is important ##
 
 - the output, via `print( r.content )`
 
