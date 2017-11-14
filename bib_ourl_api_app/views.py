@@ -48,10 +48,18 @@ def bib_to_ourl( request ):
     if not bibjson:
         return HttpResponseBadRequest( '400 / Bad Request -- no `bibjson` parameter')
     bib = json.loads( bibjson )
-    ourl = openurl_from_bib(bib)
+    ourl = openurl_from_bib( bib )
     log.debug( 'ourl, ```%s```' % ourl )
     rtrn_dct = {
-        'ourl': ourl
+        'query': {
+            'date_time': str( start ),
+            'url': '{schm}://{hst}{uri}'.format( schm=request.scheme, hst=request.META['HTTP_HOST'], uri=request.META['REQUEST_URI'] )
+        },
+        'response': {
+            'openurl': ourl,
+            'elapsed_time': str( datetime.datetime.now() - start ),
+            'decoded_bibjson': bibjson
+        }
     }
     jsn = json.dumps( rtrn_dct, sort_keys=True, indent=2 )
     return HttpResponse( jsn, content_type='application/javascript; charset=utf-8' )
