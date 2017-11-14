@@ -52,9 +52,8 @@ class TestClient( SimpleTestCase ):
     def test_v1_bibjson_get(self):
         """ Checks '/v1/ request-exact call'. """
         params = { 'bibjson': self.bibjson }
-        # response = self.client.get( '/v1/bib_to_ourl/', params )  # project root part of url is assumed
-        response = self.client.get( '/v1/bib_to_ourl/', params, **{'HTTP_HOST': '127.0.0.1', 'REQUEST_URI': 'foo'} )  # project root part of url is assumed
-        # log.debug( 'response.__dict__, ```%s```' % pprint.pformat(response.__dict__) )
+        headers = {'HTTP_HOST': '127.0.0.1', 'REQUEST_URI': 'foo'}  # passing in headers: <https://docs.djangoproject.com/en/1.11/topics/testing/tools/#django.test.Client.get>
+        response = self.client.get( '/v1/bib_to_ourl/', params, **headers )  # project root part of url is assumed
         self.assertEqual(
             200, response.status_code
         )
