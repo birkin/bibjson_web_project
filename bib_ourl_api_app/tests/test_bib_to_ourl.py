@@ -49,17 +49,25 @@ class TestClient( SimpleTestCase ):
       "year": "2010"
     }'''
 
-    def test_v1_request_exact__not_found(self):
-        """ Checks '/v1/ request-exact call'.
-            NOTE: this will really attempt a request! """
+    def test_v1_bibjson_get(self):
+        """ Checks '/v1/ request-exact call'. """
         params = { 'bibjson': self.bibjson }
-        response = self.client.get( '/v1/bib_to_ourl/', params )  # project root part of url is assumed
-        self.assertEqual( 200, response.status_code )
-        self.assertEqual( bytes, type(response.content) )
-        dct = json.loads( response.content )
-        log.debug( 'dct, ```%s```' % pprint.pformat(dct) )
+        # response = self.client.get( '/v1/bib_to_ourl/', params )  # project root part of url is assumed
+        response = self.client.get( '/v1/bib_to_ourl/', params, **{'HTTP_HOST': '127.0.0.1', 'REQUEST_URI': 'foo'} )  # project root part of url is assumed
+        # log.debug( 'response.__dict__, ```%s```' % pprint.pformat(response.__dict__) )
         self.assertEqual(
-            foo, dct
+            200, response.status_code
+        )
+        self.assertEqual(
+            bytes, type(response.content)
+        )
+        dct = json.loads( response.content )
+        self.assertEqual(
+            ['query', 'response'], sorted( dct.keys() )
+        )
+        self.assertEqual(
+            '''ctx_ver=Z39.88-2004&rft_val_fmt=info%3Aofi/fmt%3Akev%3Amtx%3Ajournal&rft.atitle=The+missing+technology%3A+an+international+comparison+of+human+capital+investment+in+healthcare.&rft.jtitle=Applied+health+economics+and+health+policy&rft.genre=article&rfr_id=info%3Asid/info%3Asid/firstsearch.oclc.org%3AMEDLINE&rft.date=2010&rft.au=Frogner%2C+BK&rft.volume=8&rft.issue=6&rft.spage=361&rft.end_page=71&rft.pages=361+-+71&rft.issn=1175-5652&rft_id=http%3A//www.worldcat.org/oclc/678061209''',
+            dct['response']['openurl']
         )
 
 
