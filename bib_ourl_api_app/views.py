@@ -16,6 +16,7 @@ log = logging.getLogger(__name__)
 def ourl_to_bib( request ):
     """ Converts openurl to bibjson. """
     log.debug( '\n\n\nstarting ourl_to_bib()...' )
+    log.debug( 'request.__dict__, ```%s```' % pprint.pformat(request.__dict__) )
     start = datetime.datetime.now()
     ourl = request.GET.get( 'ourl', None )
     if not ourl:
@@ -26,11 +27,12 @@ def ourl_to_bib( request ):
     log.debug( 'bib, ```%s```' % bib )
     rtrn_dct = {
         'query': {
-            'ourl': ourl,
-            'date_time': str( start )
+            'date_time': str( start ),
+            'url': '{schm}://{hst}{uri}'.format( schm=request.scheme, hst=request.META['HTTP_HOST'], uri=request.META['REQUEST_URI'] )
         },
         'response': {
             'bib': bib,
+            'decoded_openurl': ourl,
             'elapsed_time': str( datetime.datetime.now() - start )
         }
     }
