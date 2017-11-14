@@ -69,6 +69,8 @@ class TestClient( SimpleTestCase ):
             dct['response']['openurl']
         )
 
+    ## end class TestClient()
+
 
 class TestThesisToOpenURL( SimpleTestCase ):
     """
