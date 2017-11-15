@@ -11,6 +11,57 @@ log = logging.getLogger(__name__)
 SimpleTestCase.maxDiff = None
 
 
+class TestClient( SimpleTestCase ):
+    """ Checks client url hit. """
+
+    def setUp(self):
+        self.params_encoded = 'rft.pub=W+H+Freeman+%26+Co&rft.btitle=Introduction+to+Genetic+Analysis.&rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Abook&isbn=9781429233231&req_dat=%3Csessionid%3E0%3C%2Fsessionid%3E&title=Introduction+to+Genetic+Analysis.&pid=%3Caccession+number%3E277200522%3C%2Faccession+number%3E%3Cfssessid%3E0%3C%2Ffssessid%3E&rft.date=2008&genre=book&rft_id=urn%3AISBN%3A9781429233231&openurl=sid&rfe_dat=%3Caccessionnumber%3E277200522%3C%2Faccessionnumber%3E&rft.isbn=9781429233231&url_ver=Z39.88-2004&date=2008&rfr_id=info%3Asid%2Ffirstsearch.oclc.org%3AWorldCat&id=doi%3A&rft.genre=book'
+        self.fully_encoded = 'rft.pub%3DW%2BH%2BFreeman%2B%2526%2BCo%26rft.btitle%3DIntroduction%2Bto%2BGenetic%2BAnalysis.%26rft_val_fmt%3Dinfo%253Aofi%252Ffmt%253Akev%253Amtx%253Abook%26isbn%3D9781429233231%26req_dat%3D%253Csessionid%253E0%253C%252Fsessionid%253E%26title%3DIntroduction%2Bto%2BGenetic%2BAnalysis.%26pid%3D%253Caccession%2Bnumber%253E277200522%253C%252Faccession%2Bnumber%253E%253Cfssessid%253E0%253C%252Ffssessid%253E%26rft.date%3D2008%26genre%3Dbook%26rft_id%3Durn%253AISBN%253A9781429233231%26openurl%3Dsid%26rfe_dat%3D%253Caccessionnumber%253E277200522%253C%252Faccessionnumber%253E%26rft.isbn%3D9781429233231%26url_ver%3DZ39.88-2004%26date%3D2008%26rfr_id%3Dinfo%253Asid%252Ffirstsearch.oclc.org%253AWorldCat%26id%3Ddoi%253A%26rft.genre%3Dbook'
+
+
+    def test_v1_ourl_to_bib_only_params_encoded(self):
+        """ Checks '/v1/ ourl-to-bib call with only params (not keys) encoded'. """
+        params = { 'ourl': self.params_encoded }
+        headers = {'HTTP_HOST': '127.0.0.1', 'REQUEST_URI': 'foo'}  # passing in headers: <https://docs.djangoproject.com/en/1.11/topics/testing/tools/#django.test.Client.get>
+        response = self.client.get( '/v1/ourl_to_bib/', params, **headers )  # project root part of url is assumed
+        self.assertEqual(
+            200, response.status_code
+        )
+        self.assertEqual(
+            bytes, type(response.content)
+        )
+        dct = json.loads( response.content )
+        self.assertEqual(
+            ['query', 'response'], sorted( dct.keys() )
+        )
+        self.assertEqual(
+            'Introduction to Genetic Analysis.',
+            dct['response']['bib']['title']
+        )
+
+    def test_v1_ourl_to_bib_only_ourl_fully_encoded(self):
+        """ Checks '/v1/ ourl-to-bib call with params encoded and then whole url encoded'. """
+        params = { 'ourl': self.fully_encoded }
+        headers = {'HTTP_HOST': '127.0.0.1', 'REQUEST_URI': 'foo'}  # passing in headers: <https://docs.djangoproject.com/en/1.11/topics/testing/tools/#django.test.Client.get>
+        response = self.client.get( '/v1/ourl_to_bib/', params, **headers )  # project root part of url is assumed
+        self.assertEqual(
+            200, response.status_code
+        )
+        self.assertEqual(
+            bytes, type(response.content)
+        )
+        dct = json.loads( response.content )
+        self.assertEqual(
+            ['query', 'response'], sorted( dct.keys() )
+        )
+        self.assertEqual(
+            'Introduction to Genetic Analysis.',
+            dct['response']['bib']['title']
+        )
+
+    ## end class TestClient()
+
+
 class OpenUrlToBibTest( SimpleTestCase ):
     """ Checks ... library. """
 

@@ -50,7 +50,7 @@ class TestClient( SimpleTestCase ):
     }'''
 
     def test_v1_bibjson_get(self):
-        """ Checks '/v1/ request-exact call'. """
+        """ Checks '/v1/ bib-to-ourl call'. """
         params = { 'bibjson': self.bibjson }
         headers = {'HTTP_HOST': '127.0.0.1', 'REQUEST_URI': 'foo'}  # passing in headers: <https://docs.djangoproject.com/en/1.11/topics/testing/tools/#django.test.Client.get>
         response = self.client.get( '/v1/bib_to_ourl/', params, **headers )  # project root part of url is assumed

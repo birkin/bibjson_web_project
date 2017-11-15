@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import datetime, json, logging, os, pprint
+import datetime, json, logging, os, pprint, urllib
 from . import settings_app
 from django.conf import settings
 from django.contrib.auth import logout
@@ -21,7 +21,9 @@ def ourl_to_bib( request ):
     ourl = request.GET.get( 'ourl', None )
     if not ourl:
         return HttpResponseBadRequest( '400 / Bad Request -- no `ourl` openurl parameter')
-    log.debug( 'ourl, ```%s```' % ourl )
+    log.debug( 'ourl initially, ```%s```' % ourl )
+    ourl = urllib.parse.unquote( urllib.parse.unquote(ourl) )
+    log.debug( 'ourl decoded, ```%s```' % ourl )
     bib = bib_from_openurl( ourl )
     log.debug( 'type(bib), `%s`' % type(bib) )
     log.debug( 'bib, ```%s```' % bib )
@@ -38,6 +40,33 @@ def ourl_to_bib( request ):
     }
     jsn = json.dumps( rtrn_dct, sort_keys=True, indent=2 )
     return HttpResponse( jsn, content_type='application/javascript; charset=utf-8' )
+
+
+# def ourl_to_bib( request ):
+#     """ Converts openurl to bibjson. """
+#     log.debug( '\n\n\nstarting ourl_to_bib()...' )
+#     log.debug( 'request.__dict__, ```%s```' % pprint.pformat(request.__dict__) )
+#     start = datetime.datetime.now()
+#     ourl = request.GET.get( 'ourl', None )
+#     if not ourl:
+#         return HttpResponseBadRequest( '400 / Bad Request -- no `ourl` openurl parameter')
+#     log.debug( 'ourl, ```%s```' % ourl )
+#     bib = bib_from_openurl( ourl )
+#     log.debug( 'type(bib), `%s`' % type(bib) )
+#     log.debug( 'bib, ```%s```' % bib )
+#     rtrn_dct = {
+#         'query': {
+#             'date_time': str( start ),
+#             'url': '{schm}://{hst}{uri}'.format( schm=request.scheme, hst=request.META['HTTP_HOST'], uri=request.META['REQUEST_URI'] )
+#         },
+#         'response': {
+#             'bib': bib,
+#             'decoded_openurl': ourl,
+#             'elapsed_time': str( datetime.datetime.now() - start )
+#         }
+#     }
+#     jsn = json.dumps( rtrn_dct, sort_keys=True, indent=2 )
+#     return HttpResponse( jsn, content_type='application/javascript; charset=utf-8' )
 
 
 def bib_to_ourl( request ):
