@@ -22,7 +22,8 @@ def ourl_to_bib( request ):
     if not ourl:
         return HttpResponseBadRequest( '400 / Bad Request -- no `ourl` openurl parameter')
     log.debug( 'ourl initially, ```%s```' % ourl )
-    ourl = urllib.parse.unquote( urllib.parse.unquote(ourl) )
+    # ourl = urllib.parse.unquote( urllib.parse.unquote(ourl) )
+    ourl = urllib.parse.unquote( ourl )
     log.debug( 'ourl decoded, ```%s```' % ourl )
     bib = bib_from_openurl( ourl )
     log.debug( 'type(bib), `%s`' % type(bib) )
@@ -76,6 +77,7 @@ def bib_to_ourl( request ):
     bibjson = request.GET.get( 'bibjson', None )
     if not bibjson:
         return HttpResponseBadRequest( '400 / Bad Request -- no `bibjson` parameter')
+    bibjson = urllib.parse.unquote( bibjson )
     bib = json.loads( bibjson )
     ourl = openurl_from_bib( bib )
     log.debug( 'ourl, ```%s```' % ourl )
