@@ -1,3 +1,13 @@
+### on this page
+
+- about
+- openurl-to-bibjson usage
+- bibjson-to-openurl usage
+- notes
+
+---
+
+
 ### about
 
 This is a lightweight [django](https://www.djangoproject.com) app that provides an api to convert an [openurl](https://en.wikipedia.org/wiki/OpenURL) to [bibjson](http://okfnlabs.org/projects/bibjson/), and to convert bibjson to an openurl.
@@ -13,12 +23,11 @@ This is a lightweight [django](https://www.djangoproject.com) app that provides 
 
 ### openurl-to-bibjson usage
 
-- python example request
+- python example request:
 
         # -*- coding: utf-8 -*-
 
         import requests  # http://docs.python-requests.org/en/master/
-
 
         raw_openurl = '''issn=1175-5652&rft_val_fmt=info:ofi/fmt:kev:mtx:journal&rfr_id=info:sid/firstsearch.oclc.org:MEDLINE&req_dat=<sessionid>0</sessionid>&pid=<accession number>678061209</accession number><fssessid>0</fssessid>&rft.date=2010&volume=8&date=2010&rft.volume=8&rfe_dat=<accessionnumber>678061209</accessionnumber>&url_ver=Z39.88-2004&atitle=The missing technology: an international comparison of human capital investment in healthcare.&genre=article&epage=71&spage=361&id=doi:&rft.spage=361&rft.sici=1175-5652(2010)8:6<361:TMTAIC>2.0.TX;2-O&aulast=Frogner&rft.issue=6&rft.epage=71&rft.jtitle=Applied health economics and health policy&rft.aulast=Frogner&title=Applied health economics and health policy&rft.aufirst=BK&rft_id=urn:ISSN:1175-5652&sici=1175-5652(2010)8:6<361:TMTAIC>2.0.TX;2-O&sid=FirstSearch:MEDLINE&rft.atitle=The missing technology: an international comparison of human capital investment in healthcare.&issue=6&rft.issn=1175-5652&rft.genre=article&aufirst=BK'''
 
@@ -27,12 +36,12 @@ This is a lightweight [django](https://www.djangoproject.com) app that provides 
 
         ## note: requests automatically properly encodes the openurl -- this encoding step is important ##
 
-- the output, via `print( r.content )`
+- the returned json:
 
-        b'{
+        {
           "query": {
-            "date_time": "2017-11-10 13:46:49.137818",
-            "url": "https://plibwwwcit.services.brown.edu/bib_ourl_api/v1/ourl_to_bib/?ourl=ctx_ver%253DZ39.88-2004%2526rft_val_fmt%253Dinfo%253Aofi%252Ffmt%253Akev%253Amtx%253Ajournal%2526rft.atitle%253DThe%2520missing%2520technology%253A%2520an%2520international%2520comparison%2520of%2520human%2520capital%2520investment%2520in%2520healthcare.%2526rft.jtitle%253DApplied%2520health%2520economics%2520and%2520health%2520policy%2526rft.genre%253Darticle%2526rfr_id%253Dinfo%253Asid%252Finfo%253Asid%252Ffirstsearch.oclc.org%253AMEDLINE%2526rft.date%253D2010%2526rft.au%253DFrogner%252C%2520BK%2526rft.volume%253D8%2526rft.issue%253D6%2526rft.spage%253D361%2526rft.end_page%253D71%2526rft.pages%253D361%2520-%252071%2526rft.issn%253D1175-5652%2526rft_id%253Dhttp%253A%252F%252Fwww.worldcat.org%252Foclc%252F678061209"
+            "date_time": "2017-11-15 17:05:08.414930",
+            "url": "http://127.0.0.1/bib_ourl_api/v1/ourl_to_bib/?ourl=issn%3D1175-5652%26rft_val_fmt%3Dinfo%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal%26rfr_id%3Dinfo%3Asid%2Ffirstsearch.oclc.org%3AMEDLINE%26req_dat%3D%3Csessionid%3E0%3C%2Fsessionid%3E%26pid%3D%3Caccession%20number%3E678061209%3C%2Faccession%20number%3E%3Cfssessid%3E0%3C%2Ffssessid%3E%26rft.date%3D2010%26volume%3D8%26date%3D2010%26rft.volume%3D8%26rfe_dat%3D%3Caccessionnumber%3E678061209%3C%2Faccessionnumber%3E%26url_ver%3DZ39.88-2004%26atitle%3DThe%20missing%20technology%3A%20an%20international%20comparison%20of%20human%20capital%20investment%20in%20healthcare.%26genre%3Darticle%26epage%3D71%26spage%3D361%26id%3Ddoi%3A%26rft.spage%3D361%26rft.sici%3D1175-5652(2010)8%3A6%3C361%3ATMTAIC%3E2.0.TX%3B2-O%26aulast%3DFrogner%26rft.issue%3D6%26rft.epage%3D71%26rft.jtitle%3DApplied%20health%20economics%20and%20health%20policy%26rft.aulast%3DFrogner%26title%3DApplied%20health%20economics%20and%20health%20policy%26rft.aufirst%3DBK%26rft_id%3Durn%3AISSN%3A1175-5652%26sici%3D1175-5652(2010)8%3A6%3C361%3ATMTAIC%3E2.0.TX%3B2-O%26sid%3DFirstSearch%3AMEDLINE%26rft.atitle%3DThe%20missing%20technology%3A%20an%20international%20comparison%20of%20human%20capital%20investment%20in%20healthcare.%26issue%3D6%26rft.issn%3D1175-5652%26rft.genre%3Darticle%26aufirst%3DBK"
           },
           "response": {
             "bib": {
@@ -68,15 +77,17 @@ This is a lightweight [django](https://www.djangoproject.com) app that provides 
               "volume": "8",
               "year": "2010"
             },
-            "elapsed_time": "0:00:00.007019"
+            "decoded_openurl": "issn=1175-5652&rft_val_fmt=info:ofi/fmt:kev:mtx:journal&rfr_id=info:sid/firstsearch.oclc.org:MEDLINE&req_dat=<sessionid>0</sessionid>&pid=<accession number>678061209</accession number><fssessid>0</fssessid>&rft.date=2010&volume=8&date=2010&rft.volume=8&rfe_dat=<accessionnumber>678061209</accessionnumber>&url_ver=Z39.88-2004&atitle=The missing technology: an international comparison of human capital investment in healthcare.&genre=article&epage=71&spage=361&id=doi:&rft.spage=361&rft.sici=1175-5652(2010)8:6<361:TMTAIC>2.0.TX;2-O&aulast=Frogner&rft.issue=6&rft.epage=71&rft.jtitle=Applied health economics and health policy&rft.aulast=Frogner&title=Applied health economics and health policy&rft.aufirst=BK&rft_id=urn:ISSN:1175-5652&sici=1175-5652(2010)8:6<361:TMTAIC>2.0.TX;2-O&sid=FirstSearch:MEDLINE&rft.atitle=The missing technology: an international comparison of human capital investment in healthcare.&issue=6&rft.issn=1175-5652&rft.genre=article&aufirst=BK",
+            "elapsed_time": "0:00:00.006880"
           }
-        }'
+        }
 
 ---
 
+
 ### bibjson-to-openurl usage
 
-- python example request
+- python example request:
 
         # -*- coding: utf-8 -*-
 
@@ -123,53 +134,19 @@ This is a lightweight [django](https://www.djangoproject.com) app that provides 
 
         ## note: requests automatically properly encodes the bibjson -- this encoding step is important ##
 
-- the output, via `print( r.content )`
+- the returned json:
 
-        # b'{
-        #   "query": {
-        #     "date_time": "2017-11-14 16:39:28.548453",
-        #     "url": "http://127.0.0.1/bib_ourl_api/v1/bib_to_ourl/?bibjson=%7B%0A++%22_rfr%22%3A+%22info%3Asid%2Ffirstsearch.oclc.org%3AMEDLINE%22%2C%0A++%22author%22%3A+%5B%0A++++%7B%0A++++++%22firstname%22%3A+%22BK%22%2C%0A++++++%22lastname%22%3A+%22Frogner%22%2C%0A++++++%22name%22%3A+%22Frogner%2C+BK%22%0A++++%7D%0A++%5D%2C%0A++%22end_page%22%3A+%2271%22%2C%0A++%22identifier%22%3A+%5B%0A++++%7B%0A++++++%22id%22%3A+%221175-5652%22%2C%0A++++++%22type%22%3A+%22issn%22%0A++++%7D%2C%0A++++%7B%0A++++++%22id%22%3A+%22678061209%22%2C%0A++++++%22type%22%3A+%22oclc%22%0A++++%7D%0A++%5D%2C%0A++%22issue%22%3A+%226%22%2C%0A++%22journal%22%3A+%7B%0A++++%22name%22%3A+%22Applied+health+economics+and+health+policy%22%0A++%7D%2C%0A++%22pages%22%3A+%22361+-+71%22%2C%0A++%22place_of_publication%22%3A+null%2C%0A++%22publisher%22%3A+null%2C%0A++%22start_page%22%3A+%22361%22%2C%0A++%22title%22%3A+%22The+missing+technology%3A+an+international+comparison+of+human+capital+investment+in+healthcare.%22%2C%0A++%22type%22%3A+%22article%22%2C%0A++%22volume%22%3A+%228%22%2C%0A++%22year%22%3A+%222010%22%0A%7D"
-        #   },
-        #   "response": {
-        #     "decoded_bibjson": "{\
-        #   \\"_rfr\\": \\"info:sid/firstsearch.oclc.org:MEDLINE\\",\
-        #   \\"author\\": [\
-        #     {\
-        #       \\"firstname\\": \\"BK\\",\
-        #       \\"lastname\\": \\"Frogner\\",\
-        #       \\"name\\": \\"Frogner, BK\\"\
-        #     }\
-        #   ],\
-        #   \\"end_page\\": \\"71\\",\
-        #   \\"identifier\\": [\
-        #     {\
-        #       \\"id\\": \\"1175-5652\\",\
-        #       \\"type\\": \\"issn\\"\
-        #     },\
-        #     {\
-        #       \\"id\\": \\"678061209\\",\
-        #       \\"type\\": \\"oclc\\"\
-        #     }\
-        #   ],\
-        #   \\"issue\\": \\"6\\",\
-        #   \\"journal\\": {\
-        #     \\"name\\": \\"Applied health economics and health policy\\"\
-        #   },\
-        #   \\"pages\\": \\"361 - 71\\",\
-        #   \\"place_of_publication\\": null,\
-        #   \\"publisher\\": null,\
-        #   \\"start_page\\": \\"361\\",\
-        #   \\"title\\": \\"The missing technology: an international comparison of human capital investment in healthcare.\\",\
-        #   \\"type\\": \\"article\\",\
-        #   \\"volume\\": \\"8\\",\
-        #   \\"year\\": \\"2010\\"\
-        # }",
-        #     "elapsed_time": "0:00:00.006185",
-        #     "openurl": "ctx_ver=Z39.88-2004&rft_val_fmt=info%3Aofi/fmt%3Akev%3Amtx%3Ajournal&rft.atitle=The+missing+technology%3A+an+international+comparison+of+human+capital+investment+in+healthcare.&rft.jtitle=Applied+health+economics+and+health+policy&rft.genre=article&rfr_id=info%3Asid/info%3Asid/firstsearch.oclc.org%3AMEDLINE&rft.date=2010&rft.au=Frogner%2C+BK&rft.volume=8&rft.issue=6&rft.spage=361&rft.end_page=71&rft.pages=361+-+71&rft.issn=1175-5652&rft_id=http%3A//www.worldcat.org/oclc/678061209"
-        #   }
-        # }'
-
-    - TODO: format as 'query'/'response' as for openurl-to-bib
+        {
+          "query": {
+            "date_time": "2017-11-15 17:10:23.020677",
+            "url": "http://127.0.0.1/bib_ourl_api/v1/bib_to_ourl/?bibjson=%7B%20%22_rfr%22%3A%20%22info%3Asid%2Ffirstsearch.oclc.org%3AMEDLINE%22%2C%20%22author%22%3A%20%5B%20%7B%20%22firstname%22%3A%20%22BK%22%2C%20%22lastname%22%3A%20%22Frogner%22%2C%20%22name%22%3A%20%22Frogner%2C%20BK%22%20%7D%20%5D%2C%20%22end_page%22%3A%20%2271%22%2C%20%22identifier%22%3A%20%5B%20%7B%20%22id%22%3A%20%221175-5652%22%2C%20%22type%22%3A%20%22issn%22%20%7D%2C%20%7B%20%22id%22%3A%20%22678061209%22%2C%20%22type%22%3A%20%22oclc%22%20%7D%20%5D%2C%20%22issue%22%3A%20%226%22%2C%20%22journal%22%3A%20%7B%20%22name%22%3A%20%22Applied%20health%20economics%20and%20health%20policy%22%20%7D%2C%20%22pages%22%3A%20%22361%20-%2071%22%2C%20%22place_of_publication%22%3A%20null%2C%20%22publisher%22%3A%20null%2C%20%22start_page%22%3A%20%22361%22%2C%20%22title%22%3A%20%22The%20missing%20technology%3A%20an%20international%20comparison%20of%20human%20capital%20investment%20in%20healthcare.%22%2C%20%22type%22%3A%20%22article%22%2C%20%22volume%22%3A%20%228%22%2C%20%22year%22%3A%20%222010%22%20%7D"
+          },
+          "response": {
+            "decoded_bibjson": "{ \"_rfr\": \"info:sid/firstsearch.oclc.org:MEDLINE\", \"author\": [ { \"firstname\": \"BK\", \"lastname\": \"Frogner\", \"name\": \"Frogner, BK\" } ], \"end_page\": \"71\", \"identifier\": [ { \"id\": \"1175-5652\", \"type\": \"issn\" }, { \"id\": \"678061209\", \"type\": \"oclc\" } ], \"issue\": \"6\", \"journal\": { \"name\": \"Applied health economics and health policy\" }, \"pages\": \"361 - 71\", \"place_of_publication\": null, \"publisher\": null, \"start_page\": \"361\", \"title\": \"The missing technology: an international comparison of human capital investment in healthcare.\", \"type\": \"article\", \"volume\": \"8\", \"year\": \"2010\" }",
+            "elapsed_time": "0:00:00.005927",
+            "openurl": "ctx_ver=Z39.88-2004&rft_val_fmt=info%3Aofi/fmt%3Akev%3Amtx%3Ajournal&rft.atitle=The+missing+technology%3A+an+international+comparison+of+human+capital+investment+in+healthcare.&rft.jtitle=Applied+health+economics+and+health+policy&rft.genre=article&rfr_id=info%3Asid/info%3Asid/firstsearch.oclc.org%3AMEDLINE&rft.date=2010&rft.au=Frogner%2C+BK&rft.volume=8&rft.issue=6&rft.spage=361&rft.end_page=71&rft.pages=361+-+71&rft.issn=1175-5652&rft_id=http%3A//www.worldcat.org/oclc/678061209"
+          }
+        }
 
 
 ---
