@@ -69,13 +69,6 @@ def bib_to_ourl( request ):
     return HttpResponse( jsn, content_type='application/javascript; charset=utf-8' )
 
 
-# def access_test( request ):
-#     """ Returns simplest response. """
-#     now = datetime.datetime.now()
-#     log.debug( 'now-time, ```%s```' % str(now) )
-#     return HttpResponse( '<p>hi</p> <p>( %s )</p>' % now )
-
-
 def info( request ):
     """ Returns simplest response. """
     start = datetime.datetime.now()
@@ -92,8 +85,3 @@ def info( request ):
     }
     jsn = json.dumps( rtrn_dct, sort_keys=True, indent=2 )
     return HttpResponse( jsn, content_type='application/javascript; charset=utf-8' )
-
-
-# def info( request ):
-#     """ Returns simplest response. """
-#     return HttpResponseRedirect( settings_app.README_URL )
