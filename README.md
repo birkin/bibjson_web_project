@@ -156,7 +156,7 @@ This is a lightweight [django](https://www.djangoproject.com) app that provides 
 
 ### notes
 
-- hitting the main url, i.e. `http://127.0.0.1/bib_ourl_api/` will redirect to an info page, i.e. `http://127.0.0.1/bib_ourl_api/` with a simple json response showing a 'documentation' link to this readme, as well as a 'message' string which is normally `ok`, but could alert users to new and/or deprecated features.
+- hitting the main url, i.e. `http://127.0.0.1/bib_ourl_api/` will redirect to an info page, i.e. `http://127.0.0.1/bib_ourl_api/info/` with a simple json response showing a 'documentation' link to this readme, as well as a 'message' string which is normally `ok`, but could alert users to new and/or deprecated features.
 
 - not reflected in this commit history is that this project is a speck on the shoulders of the great work done by [Ted Lawless](https://github.com/lawlesst) who created the [original bibjsontools](https://github.com/lawlesst/bibjsontools).
 
