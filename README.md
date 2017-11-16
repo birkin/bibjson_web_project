@@ -18,6 +18,8 @@ This is a lightweight [django](https://www.djangoproject.com) app that provides 
 
 - django is a python webapp framework; this project is lightweight in the sense that it doesn't use or require a database or templating.
 
+- _raison d'être:_ For a few projects, we need to create or parse openurls, and have used good libraries for this. However, sometimes the libraries have needed to be updated, but have not been compatible with other languages or language-versions. Further, updates to libraries require tracking down the applications that use them. This language-agnostic micro-service addresses these issues.
+
 ---
 
 
@@ -34,7 +36,7 @@ This is a lightweight [django](https://www.djangoproject.com) app that provides 
         payload = { 'ourl': raw_openurl }
         r = requests.get('http://127.0.0.1/bib_ourl_api/v1/ourl_to_bib/', params=payload)
 
-        ## note: requests automatically properly encodes the openurl -- this encoding step is important ##
+        ## note: the 'requests' package automatically properly encodes the openurl -- this encoding step is important ##
 
 - the returned json:
 
@@ -132,7 +134,7 @@ This is a lightweight [django](https://www.djangoproject.com) app that provides 
 
         r = requests.get('http://127.0.0.1/bib_ourl_api/v1/bib_to_ourl/', params=payload)
 
-        ## note: requests automatically properly encodes the bibjson -- this encoding step is important ##
+        ## note: the 'requests' package automatically properly encodes the bibjson -- this encoding step is important ##
 
 - the returned json:
 
@@ -153,6 +155,8 @@ This is a lightweight [django](https://www.djangoproject.com) app that provides 
 
 
 ### notes
+
+- hitting the main url, i.e. `http://127.0.0.1/bib_ourl_api/` will redirect to an info page, i.e. `http://127.0.0.1/bib_ourl_api/` with a simple json response showing a 'documentation' link to this readme, as well as a 'message' string which is normally `ok`, but could alert users to new and/or deprecated features.
 
 - not reflected in this commit history is that this project is a speck on the shoulders of the great work done by [Ted Lawless](https://github.com/lawlesst) who created the [original bibjsontools](https://github.com/lawlesst/bibjsontools).
 
