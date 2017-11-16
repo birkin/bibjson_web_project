@@ -17,7 +17,7 @@ urlpatterns = [
 
     url( r'^v1/bib_to_ourl/$', views.bib_to_ourl, name='bib_to_ourl' ),
 
-    url( r'^access_test/$', views.access_test, name='access_test_url' ),
+    # url( r'^access_test/$', views.access_test, name='access_test_url' ),
 
     url( r'^info/$', views.info, name='info_url' ),
 
