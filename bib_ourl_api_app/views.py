@@ -31,7 +31,7 @@ def ourl_to_bib( request ):
     rtrn_dct = {
         'query': {
             'date_time': str( start ),
-            'url': '{schm}://{hst}{uri}'.format( schm=request.scheme, hst=request.META['HTTP_HOST'], uri=request.META['REQUEST_URI'] )
+            'url': '{schm}://{hst}{uri}'.format( schm=request.scheme, hst=request.META['HTTP_HOST'], uri=request.META.get('REQUEST_URI', request.META['PATH_INFO']) )
         },
         'response': {
             'bib': bib,
@@ -57,7 +57,7 @@ def bib_to_ourl( request ):
     rtrn_dct = {
         'query': {
             'date_time': str( start ),
-            'url': '{schm}://{hst}{uri}'.format( schm=request.scheme, hst=request.META['HTTP_HOST'], uri=request.META['REQUEST_URI'] )
+            'url': '{schm}://{hst}{uri}'.format( schm=request.scheme, hst=request.META['HTTP_HOST'], uri=request.META.get('REQUEST_URI', request.META['PATH_INFO']) )
         },
         'response': {
             'openurl': ourl,
@@ -75,7 +75,7 @@ def info( request ):
     rtrn_dct = {
         'query': {
             'date_time': str( start ),
-            'url': '{schm}://{hst}{uri}'.format( schm=request.scheme, hst=request.META['HTTP_HOST'], uri=request.META['REQUEST_URI'] )
+            'url': '{schm}://{hst}{uri}'.format( schm=request.scheme, hst=request.META['HTTP_HOST'], uri=request.META.get('REQUEST_URI', request.META['PATH_INFO']) )
         },
         'response': {
             'documentation': settings_app.README_URL,
