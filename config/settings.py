@@ -161,12 +161,22 @@ LOGGING = {
             'class':'logging.StreamHandler',
             'formatter': 'standard'
         },
+        'mail_admins': {
+            'level': 'ERROR',
+            'class': 'django.utils.log.AdminEmailHandler',
+            'include_html': True,
+        }
     },
     'loggers': {
+        'django.request': {
+            'handlers': ['mail_admins'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
         'bib_ourl_api_app': {
             'handlers': ['logfile', 'console'],
             'level': os.environ.get(u'BIBOURLAPI__LOG_LEVEL'),
-            'propagate': True
+            'propagate': False
         },
     }
 }
