@@ -2,6 +2,7 @@
 
 import datetime, json, logging, os, pprint, urllib
 from . import settings_app
+from bib_ourl_api_app.lib import info_helper
 from django.conf import settings as project_settings
 from django.contrib.auth import logout
 from django.core.urlresolvers import reverse
@@ -70,21 +71,18 @@ def bib_to_ourl( request ):
 
 
 def info( request ):
-    """ Returns simplest response. """
-    start = datetime.datetime.now()
-    rtrn_dct = {
-        'query': {
-            'date_time': str( start ),
-            'url': '{schm}://{hst}{uri}'.format( schm=request.scheme, hst=request.META['HTTP_HOST'], uri=request.META.get('REQUEST_URI', request.META['PATH_INFO']) )
-        },
-        'response': {
-            'documentation': settings_app.README_URL,
-            'elapsed_time': str( datetime.datetime.now() - start ),
-            'message': 'ok'
-        }
-    }
-    jsn = json.dumps( rtrn_dct, sort_keys=True, indent=2 )
-    return HttpResponse( jsn, content_type='application/javascript; charset=utf-8' )
+    """ Returns basic data including branch & commit. """
+    log.debug( 'user-agent, ```%s```; ip, ```%s```; referrer, ```%s```' %
+        (request.META.get('HTTP_USER_AGENT', None), request.META.get('REMOTE_ADDR', None), request.META.get('HTTP_REFERER', None)) )
+    rq_now = datetime.datetime.now()
+    commit = info_helper.get_commit()
+    branch = info_helper.get_branch()
+    info_txt = commit.replace( 'commit', branch )
+    resp_now = datetime.datetime.now()
+    taken = resp_now - rq_now
+    context_dct = info_helper.make_context( request, rq_now, info_txt, taken )
+    output = json.dumps( context_dct, sort_keys=True, indent=2 )
+    return HttpResponse( output, content_type='application/json; charset=utf-8' )
 
 
 def error_check( request ):
