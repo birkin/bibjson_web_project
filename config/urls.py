@@ -20,6 +20,7 @@ urlpatterns = [
     # url( r'^access_test/$', views.access_test, name='access_test_url' ),
 
     url( r'^info/$', views.info, name='info_url' ),
+    url( r'^error_check/$', views.error_check, name='error_check' ),  # only generates error if DEBUG == True
 
     url( r'^$',  RedirectView.as_view(pattern_name='info_url') ),
 

@@ -85,3 +85,11 @@ def info( request ):
     }
     jsn = json.dumps( rtrn_dct, sort_keys=True, indent=2 )
     return HttpResponse( jsn, content_type='application/javascript; charset=utf-8' )
+
+
+def error_check( request ):
+    """ For checking that admins receive error-emails. """
+    if project_settings.DEBUG == True:
+        1/0
+    else:
+        return HttpResponseNotFound( '<div>404 / Not Found</div>' )
